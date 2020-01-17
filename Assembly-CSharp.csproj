@@ -78,6 +78,7 @@
     <Compile Include="Assets\Argentics\Scripts\PlatformerUserControl.cs" />
     <Compile Include="Assets\Argentics\Scripts\Restarter.cs" />
     <Compile Include="Assets\Argentics\Scripts\RotateColliderAfterDeath.cs" />
+    <Compile Include="Assets\Argentics\Scripts\TrapTrigger.cs" />
     <Compile Include="Assets\SampleScenes\Menu\Scripts\MenuSceneLoader.cs" />
     <Compile Include="Assets\SampleScenes\Menu\Scripts\PauseMenu.cs" />
     <Compile Include="Assets\SampleScenes\Menu\Scripts\SceneAndURLLoader.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\CameraLogic.cs" />
     <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\Demo.cs" />
     <Compile Include="Assets\Supercyan Character Pack Free Sample\Scripts\SimpleCharacterControl.cs" />
+    <None Include="Assets\SimpleLowPolyNature\Shaders\SimpleWater.shader" />
     <None Include="Assets\Argentics\README.txt" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>D:/ArgenticsTestTask/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>

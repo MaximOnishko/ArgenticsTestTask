@@ -30,7 +30,7 @@ namespace Argentics._2D
 
         public void Attack()
         {
-            targetPoint = transform.position - new Vector3(_enemyData.player.transform.position.x, transform.position.y, _enemyData.player.transform.position.z);
+            targetPoint = transform.position - new Vector3(_enemyData.player.transform.position.x, transform.position.y, transform.position.z);
             targetRotation = Quaternion.LookRotation(-targetPoint, Vector3.up);
             transform.rotation = targetRotation;
 
@@ -48,14 +48,12 @@ namespace Argentics._2D
             var arrow = ArrowsList.Instance.arrows.FirstOrDefault(x => !x.activeInHierarchy);
             if (arrow != null)
             {
-                //enemyData.animator.SetTrigger("Shot");
                 arrow.transform.position = transform.position + Vector3.up * 0.8f;
                 Arrow arrowcs = arrow.GetComponent<Arrow>();
                 Damaging damaging = arrow.GetComponent<Damaging>();
-                //arrowcs.direction = (_enemyData.player.transform.position - transform.position).normalized;
+
                 arrowcs.direction = transform.forward;
-                //arrowcs.direction.y = 0;
-                //arrowcs.direction.z = 0;
+
 
                 arrowcs.speed = _enemyData.attackSpeed;
                 damaging.damage = _enemyData.attackDamage;
@@ -77,23 +75,32 @@ namespace Argentics._2D
         }
         private void OnCollisionEnter(Collision collision)
         {
-            Uturn();
+            if (speed != 0)
+                Uturn();
+        }
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.tag == "Wall")
+                Uturn();
         }
         private void Run()
         {
-            Debug.Log("Run");
-            _enemyData.animator.SetFloat("Speed", 1);
+            speed = 1;
+            _enemyData.animator.SetFloat("Speed", speed);
             _enemyData.characterController.Move(transform.forward * Time.deltaTime * _enemyData.speed);
             if (!swithState) StartCoroutine(SwithState(ArcherState.idle, Random.Range(5, 10)));
         }
         private void Uturn()
         {
+            if (attack)
+                return;
+
             transform.Rotate(0, 180, 0);
         }
         private void Idle()
         {
-            _enemyData.animator.SetFloat("Speed", 0);
-
+            speed = 0;
+            _enemyData.animator.SetFloat("Speed", speed);
             if (!swithState) StartCoroutine(SwithState(ArcherState.run, Random.Range(5, 10)));
         }
         IEnumerator AttackDelay()
@@ -106,7 +113,6 @@ namespace Argentics._2D
             swithState = true;
             yield return new WaitForSeconds(delay);
             var i = Random.Range(0, 2);
-            Debug.Log(i);
             if (i == 0)
                 Uturn(); 
 

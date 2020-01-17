@@ -16,7 +16,7 @@ namespace Argentics._2D
         }
         public IEnumerator DisableByTime()
         {
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(5);
             gameObject.SetActive(false);
         }
     }

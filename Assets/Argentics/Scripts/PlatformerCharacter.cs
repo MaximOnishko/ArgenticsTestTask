@@ -84,10 +84,15 @@ namespace Argentics._2D
                 Debug.Log("Jump");
                 // Add a vertical force to the player.
                 m_Grounded = false;
+                m_AirControl = true;
                 m_Anim.SetBool("Grounded", false);
                 m_Anim.SetTrigger("Jump");
                 m_Rigidbody.AddForce(new Vector3(0f, m_JumpForce));
             }
+        }
+        private void OnCollisionEnter(Collision collision)
+        {
+            m_AirControl = false;
         }
         private void Flip()
         {

@@ -75,15 +75,21 @@ namespace Argentics._2D
                     break;
             }
         }
-
+        private void OnCollisionEnter(Collision collision)
+        {
+            Uturn();
+        }
         private void Run()
         {
             Debug.Log("Run");
             _enemyData.animator.SetFloat("Speed", 1);
             _enemyData.characterController.Move(transform.forward * Time.deltaTime * _enemyData.speed);
-            if (!swithState) StartCoroutine(SwithState(ArcherState.run, Random.Range(5, 10)));
+            if (!swithState) StartCoroutine(SwithState(ArcherState.idle, Random.Range(5, 10)));
         }
-
+        private void Uturn()
+        {
+            transform.Rotate(0, 180, 0);
+        }
         private void Idle()
         {
             _enemyData.animator.SetFloat("Speed", 0);
@@ -99,6 +105,11 @@ namespace Argentics._2D
         {
             swithState = true;
             yield return new WaitForSeconds(delay);
+            var i = Random.Range(0, 2);
+            Debug.Log(i);
+            if (i == 0)
+                Uturn(); 
+
             _archerState = archerState;
             swithState = false;
         }

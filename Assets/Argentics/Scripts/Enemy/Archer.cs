@@ -30,9 +30,10 @@ namespace Argentics._2D
 
         public void Attack()
         {
-            targetPoint = transform.position - new Vector3(_enemyData.player.transform.position.x, transform.position.y, transform.position.z);
+            targetPoint = transform.position - new Vector3(_enemyData.player.transform.position.x, transform.position.y, _enemyData.player.transform.position.z);
             targetRotation = Quaternion.LookRotation(-targetPoint, Vector3.up);
             transform.rotation = targetRotation;
+            _enemyData.navMeshAgent.Stop();
 
             if (!attack)
             {
@@ -73,21 +74,12 @@ namespace Argentics._2D
                     break;
             }
         }
-        private void OnCollisionEnter(Collision collision)
-        {
-            if (speed != 0)
-                Uturn();
-        }
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.tag == "Wall")
-                Uturn();
-        }
         private void Run()
         {
             speed = 1;
+            _enemyData.navMeshAgent.ResetPath();
             _enemyData.animator.SetFloat("Speed", speed);
-            _enemyData.characterController.Move(transform.forward * Time.deltaTime * _enemyData.speed);
+            _enemyData.navMeshAgent.SetDestination(_enemyData.GetCurrentPoint(transform.position).transform.position);
             if (!swithState) StartCoroutine(SwithState(ArcherState.idle, Random.Range(5, 10)));
         }
         private void Uturn()
@@ -100,6 +92,7 @@ namespace Argentics._2D
         private void Idle()
         {
             speed = 0;
+            _enemyData.navMeshAgent.Stop();
             _enemyData.animator.SetFloat("Speed", speed);
             if (!swithState) StartCoroutine(SwithState(ArcherState.run, Random.Range(5, 10)));
         }
@@ -112,9 +105,6 @@ namespace Argentics._2D
         {
             swithState = true;
             yield return new WaitForSeconds(delay);
-            var i = Random.Range(0, 2);
-            if (i == 0)
-                Uturn(); 
 
             _archerState = archerState;
             swithState = false;

@@ -8,10 +8,12 @@ namespace Argentics._2D
     public class CanvasController : Singleton<CanvasController>
     {
         public GameObject[] heartsImage;
-
+        public GameObject SplashScreen;
 
         public void SetHeartsImage(int countHealth)
         {
+            SplashScreen.SetActive(false);
+
             if (countHealth > heartsImage.Length)
                 Debug.LogError("Need adding Heart image");
 
@@ -31,8 +33,19 @@ namespace Argentics._2D
                 var image = heartsImage.FirstOrDefault(x => x.activeInHierarchy);
 
                 if (image != null)
+                {
                     image.SetActive(false);
+                    StartCoroutine(IESplashScreen());
+                    
+                }
+
             }
+        }
+        IEnumerator IESplashScreen()
+        {
+            SplashScreen.SetActive(true);
+            yield return new WaitForSeconds(0.1f);
+            SplashScreen.SetActive(false);
         }
         public void IncreaseHearts(int heal)
         {

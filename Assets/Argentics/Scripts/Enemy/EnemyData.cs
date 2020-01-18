@@ -26,15 +26,19 @@ namespace Argentics._2D
         public float attackDistance => _attackDistance;
         public float attackSpeed => _attackSpeed;
         public float attackDelay => _attackDelay;
-
+        
+        public GameObject[] moveToPoints;
+        private int currentPoint;
         [HideInInspector] public CharacterController characterController;
         [HideInInspector] public NavMeshAgent navMeshAgent;
         [HideInInspector] public Animator animator;
 
         private void Awake()
         {
+            currentPoint = 0;
             characterController = GetComponent<CharacterController>();
             navMeshAgent = GetComponent<NavMeshAgent>();
+            navMeshAgent.speed = speed;
             animator = GetComponent<Animator>();
             player = GameObject.FindGameObjectWithTag("Player");
 
@@ -45,6 +49,18 @@ namespace Argentics._2D
                         gameObject.AddComponent<Archer>();
                     break;
             }
+        }
+        public GameObject GetCurrentPoint(Vector3 archerPos)
+        {
+            if (Vector3.Distance(archerPos, moveToPoints[currentPoint].transform.position) < 0.4f)
+            {
+                currentPoint++;
+                Debug.Log(currentPoint);
+                if (currentPoint == moveToPoints.Length)
+                    currentPoint = 0;
+            }
+            Debug.Log(moveToPoints[currentPoint]);
+            return moveToPoints[currentPoint];
         }
     }
 }
